@@ -96,12 +96,13 @@ Minimally, we need these 3 Azure resources declared in the ARM template:
  2. Keyvault + Secret
  3. LogicApps
 
-We don't need to create any SPN at the Azure AD level because it's actually managed under the hood by the User-Assigned managed identity.
+We don't need to create any Service Principal at the Azure AD level because it's actually managed under the hood by the User-Assigned managed identity.
 
 Here's some interesting points from the template:
 
  - Setting the KeyVault Access Policy by getting dynamically the reference to the deployed User-Assigned managed identity.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv3.PNG)
+
  - Setting the identity configuration for the LogicApps to use the User-Assigned managed identity. The schema is a bit strange here because you need to set dynamically a node name but not a node value.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv4.PNG)
 
@@ -133,6 +134,7 @@ Run the setup.ps1 script with the following parameters:
  - LogicappsName: *The LogicApps' name.*
  - UserAssignedIdentitiesName: *The name of the Azure User-Assigned managed identity.*
 
-setup.ps1 -ResourceGroupName <your_value> -KeyvaultName <your_value> -LogicappsName <your_value> -UserAssignedIdentitiesName <your_value>
+
+*setup.ps1 -ResourceGroupName <your_value> -KeyvaultName <your_value> -LogicappsName <your_value> -UserAssignedIdentitiesName <your_value>*
 
     
