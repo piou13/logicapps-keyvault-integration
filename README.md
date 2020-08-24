@@ -25,9 +25,9 @@ Long story short:
 
 All of these burden the automation, development and maintenance process.
 
-## Managed Identities for Azure to the rescue
+## Managed Identities for Azure to the rescue (MIA)
 
-To simplify the automation process while enforcing robustness and maintenance, I definitely prefer using LogicApps and Keyvault in conjunction with Managed Identities for Azure (formerly Azure MSI).
+To simplify the automation process while enforcing robustness and maintenance, I definitely prefer using LogicApps and Keyvault in conjunction with MIA - Managed Identities for Azure (formerly Azure MSI).
 
 More information here: [https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
 
@@ -52,5 +52,22 @@ In LogicApps, Managed Identities are managed by browsing the *Identity* section:
 
 **System-Assigned or User-Assigned?**
 
-Personally, in most of my scenarios, I configure User-Assigned managed identity because I rarely have only one LogicApps in my solutions. If you have multiple *"Managed Identities for Azure compatible"* services (like LogicApps, FunctionApp, API Management, ...) that need to access quite the same set of resources from Keyvault, definitely use an User-Assigner managed identity.
+Personally, in most of my scenarios, I configure User-Assigned managed identity because I rarely have only one LogicApps in my solutions. If you have multiple *"MIA-compatible"* services (like LogicApps, FunctionApp, API Management, ...) that need to access quite the same set of resources from Keyvault, definitely use an User-Assigner managed identity.
 If you have a small solution with an one-to-one relationship between LogicApps and Keyvault or if you have big dichotomy concerns, choose System-Assigned managed identity.
+
+## What's needed for automation then?
+
+Minimally, we need these 3 Azure resources declared in the ARM template:
+
+ 1. User-Assigned managed identity
+ 2. Keyvault + Secret
+ 3. LogicApps
+
+We don't need to create any SPN at the Azure AD level because it's actually managed under the hood by the User-Assigned managed identity.
+
+Here's some interesting points from the template:
+
+ - Setting the KeyVault Access Policy by getting dynamically the reference to the deployed User-Assigned managed identity.
+![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv3.PNG)
+ - Setting the identity configuration for the LogicApps to use the User-Assigned managed identity. The schema is a bit strange here because you need to set dynamically a node name but not a node value.
+![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv4.PNG)
