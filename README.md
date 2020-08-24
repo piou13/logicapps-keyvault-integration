@@ -106,6 +106,8 @@ Here's some interesting points from the template:
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv4.PNG)
 
 
+## Conclusion
+
 That's it to start playing with information stored in KeyVault from multiple LogicApps.
 Of course, I recommend to put additional security feature like Secure Input and Secure Output when needed:
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv5.PNG)
