@@ -2,6 +2,7 @@
 
 This article shows a way to use Azure Keyvault integration with Azure LogicApps in order to manage sensitive information but by using Managed Identities for Azure (formerly Azure MSI) and not the LogicApps KeyVault Connector.
 
+
 ## Overall considerations
 
 In Azure architectures, dealing with sensitive information, like credentials, secrets or connection strings, often drives to Azure Keyvault.
@@ -24,6 +25,7 @@ Long story short:
  - The connector is represented by an "API Connection" object (*Microsoft.Web/connections*) that needs to be declared in the ARM template. Moreover, API Connections require, in some cases, manual steps after deployment.
 
 All of these burden the automation, development and maintenance process.
+
 
 ## Managed Identities for Azure to the rescue (MIA)
 
@@ -55,29 +57,36 @@ In LogicApps, Managed Identities are managed by browsing the *Identity* section:
 Personally, in most of my scenarios, I configure User-Assigned managed identity because I rarely have only one LogicApps in my solutions. If you have multiple *"MIA-compatible"* services (like LogicApps, FunctionApp, API Management, ...) that need to access quite the same set of resources from Keyvault, definitely use an User-Assigned managed identity.
 If you have a small solution with an one-to-one relationship between LogicApps and Keyvault or if you have big dichotomy concerns, choose System-Assigned managed identity.
 
+
 ## High level architecture
 
 This diagram shows a simple representation of what is implemented in this sample (but only for one LogicApps). You can iterate and use the same User-Assigned managed identity from different LogicApps.
 
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv6.png)
 
+
 ## Configuration in Azure portal
 
-**Used-Assigned managed identity**
+**User-Assigned managed identity**
+
 In the portal, search for *'Managed Identities'* and create or manage identities.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv7.PNG)
 
 **LogicApps integration**
+
 In the *'Identity'* section, click the *'User-Assigned'* tab and add the previously created identity.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv8.PNG)
 
 **LogicApps action**
+
 In the LogicApps *'HTTP action',* define the target endpoint and the authentication parameters. You should see your User-Assigned managed identity as a choice.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv9.PNG)
 
 **KeyVault Access Policies**
+
 In the *'Access Policies'* for the KeyVault, grant permissions for the User-Assigned managed identity.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv10.PNG)
+
 
 ## What's needed for automation then?
 
@@ -100,6 +109,7 @@ Here's some interesting points from the template:
 That's it to start playing with information stored in KeyVault from multiple LogicApps.
 Of course, I recommend to put additional security feature like Secure Input and Secure Output when needed:
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv5.PNG)
+
 
 ## Install the sample
 
