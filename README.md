@@ -72,8 +72,10 @@ Here's some interesting points from the template:
  - Setting the identity configuration for the LogicApps to use the User-Assigned managed identity. The schema is a bit strange here because you need to set dynamically a node name but not a node value.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv4.PNG)
 
+
 That's it to start playing with information stored in KeyVault from multiple LogicApps.
 Of course, I recommend to put additional security feature like Secure Input and Secure Output when needed:
+
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv5.PNG)
 
 ## Install the sample
