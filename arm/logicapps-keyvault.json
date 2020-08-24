@@ -8,7 +8,7 @@
         "LogicappsName": {
             "type": "string"
         },
-        "userAssignedIdentitiesName": {
+        "UserAssignedIdentitiesName": {
             "type": "string"
         }
     },
@@ -17,7 +17,7 @@
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "apiVersion": "2018-11-30",
-            "name": "[parameters('userAssignedIdentitiesName')]",
+            "name": "[parameters('UserAssignedIdentitiesName')]",
             "location": "[resourceGroup().location]"
         },
         {
@@ -34,7 +34,7 @@
                 "accessPolicies": [
                     {
                         "tenantId": "[subscription().tenantId]",
-                        "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('userAssignedIdentitiesName')), '2018-11-30').principalId]",
+                        "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('UserAssignedIdentitiesName')), '2018-11-30').principalId]",
                         "permissions": {
                             "secrets": [
                                 "get",
@@ -49,7 +49,7 @@
                 "enableSoftDelete": false
             },
             "dependsOn": [
-                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('userAssignedIdentitiesName'))]"
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('UserAssignedIdentitiesName'))]"
             ]
         },
         {
@@ -76,7 +76,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('userAssignedIdentitiesName'))]": {}
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('UserAssignedIdentitiesName'))]": {}
                 }
             },
             "properties": {
@@ -106,7 +106,7 @@
                             "inputs": {
                                 "authentication": {
                                     "audience": "https://vault.azure.net",
-                                    "identity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('userAssignedIdentitiesName'))]",
+                                    "identity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('UserAssignedIdentitiesName'))]",
                                     "type": "ManagedServiceIdentity"
                                 },
                                 "method": "GET",
@@ -119,7 +119,7 @@
                 "parameters": {}
             },
             "dependsOn": [
-                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('userAssignedIdentitiesName'))]"
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('UserAssignedIdentitiesName'))]"
             ]
         }
     ]

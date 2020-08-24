@@ -21,7 +21,7 @@ Long story short:
  - Using a service account is not reliable (in my opinion)
  - Using a SPN is good but mostly required the creation and configuration of a dedicated Azure App Registration (to be included in the provisioning script)
  - Azure App Registration secrets may expire! like a password for a service account (regarding some companies policies). You need to manage the life cycle.
- - The connector is represented by an "API Connection" object (*Microsoft.Web/connections*) that needs to be declared in the ARM template.
+ - The connector is represented by an "API Connection" object (*Microsoft.Web/connections*) that needs to be declared in the ARM template. Moreover, API Connections require, in some cases, manual steps after deployment.
 
 All of these burden the automation, development and maintenance process.
 
@@ -52,7 +52,7 @@ In LogicApps, Managed Identities are managed by browsing the *Identity* section:
 
 **System-Assigned or User-Assigned?**
 
-Personally, in most of my scenarios, I configure User-Assigned managed identity because I rarely have only one LogicApps in my solutions. If you have multiple *"MIA-compatible"* services (like LogicApps, FunctionApp, API Management, ...) that need to access quite the same set of resources from Keyvault, definitely use an User-Assigner managed identity.
+Personally, in most of my scenarios, I configure User-Assigned managed identity because I rarely have only one LogicApps in my solutions. If you have multiple *"MIA-compatible"* services (like LogicApps, FunctionApp, API Management, ...) that need to access quite the same set of resources from Keyvault, definitely use an User-Assigned managed identity.
 If you have a small solution with an one-to-one relationship between LogicApps and Keyvault or if you have big dichotomy concerns, choose System-Assigned managed identity.
 
 ## What's needed for automation then?
@@ -71,3 +71,30 @@ Here's some interesting points from the template:
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv3.PNG)
  - Setting the identity configuration for the LogicApps to use the User-Assigned managed identity. The schema is a bit strange here because you need to set dynamically a node name but not a node value.
 ![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv4.PNG)
+
+That's it to start playing with information stored in KeyVault from multiple LogicApps.
+Of course, I recommend to put additional security feature like Secure Input and Secure Output when needed:
+![enter image description here](https://github.com/piou13/logicapps-keyvault-integration/blob/master/docs/kv5.PNG)
+
+## Install the sample
+
+**Prerequisites:** 
+
+ - An Azure subscription
+ - Contributor on the targeted Azure Resources Group
+
+**The sample contains:**
+
+ - The setup script
+ - The ARM template
+
+**Installation:**
+Run the setup.ps1 script with the following parameters:
+
+ - ResourceGroupName: *The name of an existing Azure Resources Group.*
+ - KeyvaultName: *The KeyVault's name (a secret named MySecretName with value MySecretValue will be created.*
+ - LogicappsName: *The LogicApps' name.*
+ - UserAssignedIdentitiesName: *The name of the Azure User-Assigned managed identity.*
+
+    setup.ps1 -ResourceGroupName <your_value> -KeyvaultName <your_value> -LogicappsName <your_value> -UserAssignedIdentitiesName <your_value>
+    

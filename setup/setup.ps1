@@ -10,7 +10,7 @@ Param(
     [string]$LogicappsName,
 
     [Parameter(Mandatory=$true)]
-    [string]$userAssignedIdentitiesName
+    [string]$UserAssignedIdentitiesName
 )
 
 $0 = $myInvocation.MyCommand.Definition
@@ -29,7 +29,7 @@ Write-Host "Deploying ARM Template ... "
 Push-Location "..\arm"
 $DeploymentName = "LogicAppKeyvault-" + ((Get-Date).ToUniversalTime()).ToString("MMdd-HHmm")
 
-$ArmParamsObject = @{"KeyvaultName"=$KeyvaultName;"LogicappsName"=$LogicappsName;"userAssignedIdentitiesName"=$userAssignedIdentitiesName}
+$ArmParamsObject = @{"KeyvaultName"=$KeyvaultName;"LogicappsName"=$LogicappsName;"UserAssignedIdentitiesName"=$UserAssignedIdentitiesName}
 New-AzResourceGroupDeployment -Mode Incremental -Name $DeploymentName -ResourceGroupName $ResourceGroupName -TemplateFile "logicapps-keyvault.json" -TemplateParameterObject $ArmParamsObject
 
 Write-Host "Done" -ForegroundColor Green
