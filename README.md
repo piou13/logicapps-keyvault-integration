@@ -120,6 +120,7 @@ Of course, I recommend to put additional security feature like Secure Input and 
 
  - An Azure subscription
  - Contributor on the targeted Azure Resources Group
+ - The PowerShell Az module
 
 **The sample contains:**
 
